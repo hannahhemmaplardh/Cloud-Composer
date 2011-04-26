@@ -1,0 +1,15 @@
+import java.applet.*;
+import javax.sound.midi.*;
+//import java.awt.*;
+
+public class testappletplayer extends Applet {
+	Sequencer seq;
+	
+	public void init() {
+			
+	}
+	
+	public void stop() {
+		
+	}
+}
