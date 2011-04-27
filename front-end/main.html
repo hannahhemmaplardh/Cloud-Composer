@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>403 UI</title>
+		<link rel="stylesheet" type="text/css" href="ui.css" />
+		<script src="ui.js" type="text/javascript">
+		</script>
+	</head>
+	
+	<body onload="setEvents()">
+		<p>Cloud Composer UI!!!</p>
+		<script type="text/javascript">
+			grid(40);
+		</script>
+		<div style="margin-top:10px;margin-left:auto;margin-right:auto;overflow:hidden;width:860px;">
+			<div style="float:left;">
+				<input type="button" value="Get selected Notes" onclick="printNotes()" /><br />
+				<input type="button" value="Sort" onclick="sortAndPrintNotes()" />
+			</div>
+			<div id="output">
+				Hint -> Column id:Square id
+			</div>
+		</div>
+	</body>
+</html>
+
