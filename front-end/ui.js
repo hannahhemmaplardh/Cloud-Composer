@@ -5,6 +5,7 @@ var size = 40;						// Size of a square
 var margin = 1;						// Margin for the square
 var border = 1;						// border of a square
 var measureSeparation = 4;			// gap between measures in pixels
+var instrumentSize = 16;			// size of a single image
 
 // Normal constants
 var pitches = 8;					// number of pitches (squares) in a column
@@ -12,6 +13,9 @@ var measureWidth = 4;				// number of squares in a measure
 var extenderWidth = 24;				// width of the extender bar
 var appendBy = 2;					// number of measures to append at a time
 var instrumentOffset = 2;			// stack distancei
+var noteColor = "#CCCCCC";		// 
+var extenderOverColor = "#EEEEEE";	// 
+var extenderColor = "#CCCCCC";		// 
 
 var NOTA = 0;		// no selection
 var PIANO = 1;
@@ -37,16 +41,15 @@ var currentInstrument = DRUM;
 // call this onload
 function setEvents() {
 	document.body.addEventListener("click", mouseClick, false);
-	document.body.addEventListener("mouseover", rollOver, false);
-	document.body.addEventListener("mouseout", rollOut, false);
+//	document.body.addEventListener("mouseover", rollOver, false);
+//	document.body.addEventListener("mouseout", rollOut, false);
 }
 
-function createSquare(loc_y, listenForEvent) {
+
+function createSquare(loc_y) {
 	var sq = document.createElement("div");
 	
-	if (listenForEvent) {
-		sq.className = "grid_square";
-	}
+	sq.className = "grid_square";
 	sq.id = loc_y;
 	
 	return sq;
@@ -54,7 +57,7 @@ function createSquare(loc_y, listenForEvent) {
 }
 
 
-function createColumn(loc_x, listenForEvent) {
+function createColumn(loc_x) {
 	var column = document.createElement("div");
 	column.id = loc_x;
 
@@ -63,13 +66,13 @@ function createColumn(loc_x, listenForEvent) {
 	
 
 	for (var i=0; i<pitches; i++) {
-		column.appendChild(createSquare(i, listenForEvent));
+		column.appendChild(createSquare(i));
 	}
 
 	return column;
 }
 
-function createMeasure(numMeasure, listenForEvent) {
+function createMeasure(numMeasure) {
 	var measure = document.createElement("div");
 
 	measure.style.width = ((size+margin)*measureWidth) + "px";
@@ -77,7 +80,7 @@ function createMeasure(numMeasure, listenForEvent) {
 	
 
 	for (var i=measureWidth*numMeasure; i<measureWidth*numMeasure+measureWidth; i++) {
-		measure.appendChild(createColumn(i, listenForEvent));
+		measure.appendChild(createColumn(i));
 	}
 
 	return measure;
@@ -102,39 +105,35 @@ function grid(cols) {
 	grid.style.width = w + "px";
 	grid.style.height = 20 + h + "px";
 
-	// make inner grids for each instrument + listener
-	for (var i = 0; i <= 5; i++) {
-		grid.appendChild(createInstrumentGrid(cols, i));
-	}
-	
-		
-	
-	document.body.appendChild(grid);
-	
-	numColumns = cols;
-	
-}
 
-function createInstrumentGrid(cols, instrumentID) {
-	var listenForEvent = instrumentID == 0 ? true : false;
+	var innerGrid = document.createElement("div"); 	
+	var tempW = cols*size + cols*margin + measureSeparation*cols/measureWidth + extenderWidth + 4;	//need to also calculate extra margin
 
-	var innerGrid = document.createElement("div"); 
-	innerGrid.id = "instrument_grid" + instrumentID;
-	innerGrid.style.zIndex = 9999 - instrumentID;
-	
-	var tempW = cols*size + cols*margin + measureSeparation*cols/measureWidth + extenderWidth;	//need to also calculate extra margin
-	
+	innerGrid.id = "inner_grid";	
 	innerGrid.style.width = tempW + "px";
 	innerGrid.style.height = h + "px";
 
 
 	for (var j=0; j<cols/measureWidth; j++) {
-		innerGrid.appendChild(createMeasure(j, listenForEvent));
+		innerGrid.appendChild(createMeasure(j));
 	}
 	// button
 	innerGrid.appendChild(createExtender());
+
+
+	grid.appendChild(innerGrid);
+		
+	document.body.appendChild(grid);
+	numColumns = cols;
+}
+
+
+// creates an image of an instrument.
+function createInstrumentSquare(instrumentID) {
+	var listenForEvent = instrumentID == 0 ? true : false;
+	var innerSquare = document.createElement("span");
 	
-	return innerGrid;
+	return innerSquare;
 }
 
 
@@ -146,8 +145,10 @@ function mouseClick(event) {
 	
 		var index = checkNote(column.id, square.id)
 		if (index != -1) {
+			square.style.backgroundColor = "transparent";
 			notes.splice(index, 1);
 		} else {
+			square.style.backgroundColor = noteColor;
 			notes.push(column.id+":"+square.id);
 		}
 	} else if (current.id == "extender") {
@@ -159,13 +160,14 @@ function mouseClick(event) {
 		for (var i=numColumns/measureWidth; i<numColumns/measureWidth+appendBy; i++) {
 			innerGrid.appendChild(createMeasure(i));
 		}
+		
 		innerGrid.appendChild(current);			// add back extender bar
 		innerGrid.style.width = (innerGrid.offsetWidth + appendBy*((measureWidth*(size+margin))+measureSeparation)) + "px";	// reset width of innergrid
 		
 		numColumns = numColumns+appendBy*measureWidth;
 		
 		// bug fix, onmouseout never gets detected when appending columns:
-		current.style.backgroundColor = "#CCCCCC";
+		current.style.backgroundColor = extenderColor;
 	}
 
 }
@@ -176,9 +178,9 @@ function rollOver(event) {
 		var square = event.target;
 		var column = square.parentNode;
 	
-		square.style.backgroundColor = "#CCCCCC";
+		square.style.backgroundColor = noteColor;
 	} else if (current.id == "extender") {
-		current.style.backgroundColor = "#EEEEEE";
+		current.style.backgroundColor = extenderOverColor;
 	}
 }
 
@@ -192,7 +194,7 @@ function rollOut(event) {
 			square.style.backgroundColor = "transparent";
 		}
 	} else if (current.id == "extender") {
-		current.style.backgroundColor = "#CCCCCC";
+		current.style.backgroundColor = extenderColor;
 	}
 }
 
@@ -202,7 +204,7 @@ function checkNote(a, b) {
 	for (var i = 0; i < notes.length; i++) {
 		if (notes[i] == string) {
 			return i;
-		}	
+		}
 	}
 	return -1;
 }
