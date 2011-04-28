@@ -13,7 +13,7 @@ var measureWidth = 4;				// number of squares in a measure
 var extenderWidth = 24;				// width of the extender bar
 var appendBy = 2;					// number of measures to append at a time
 var instrumentOffset = 2;			// stack distancei
-var noteColor = "#CCCCCC";		// 
+var noteColor = "#CCCCCC";			// 
 var extenderOverColor = "#EEEEEE";	// 
 var extenderColor = "#CCCCCC";		// 
 
@@ -37,6 +37,13 @@ var numColumns = 0;					// current number of columns
 
 var instrumentsOrder = [PIANO, GUITAR, DRUM, TRUMPET, VIOLIN];	// order of instruments to be displayed in
 var currentInstrument = DRUM;
+	
+	
+	
+	
+/// LOAD events
+window.onload = setEvents;
+	
 	
 // call this onload
 function setEvents() {
