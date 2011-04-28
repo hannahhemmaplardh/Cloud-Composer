@@ -117,6 +117,7 @@ function grid(cols) {
 	for (var j=0; j<cols/measureWidth; j++) {
 		innerGrid.appendChild(createMeasure(j));
 	}
+	
 	// button
 	innerGrid.appendChild(createExtender());
 
