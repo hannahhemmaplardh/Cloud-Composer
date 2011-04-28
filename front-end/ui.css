@@ -19,7 +19,7 @@ Grid {
 }
  
 /* Square */
-#grid > div > div > div > div
+#grid > div > div > div > div > div
 {
 	border:1px solid #AAAAAA;
 	float:left;
@@ -27,6 +27,12 @@ Grid {
 	width: 40px;
 	height: 40px;
 	cursor:pointer;
+}
+
+/* Octave */
+#grid > div > div > div > div
+{
+	margin-bottom: 4px;
 }
 
 /* Column */

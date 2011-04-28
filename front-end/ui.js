@@ -8,7 +8,9 @@ var measureSeparation = 4;			// gap between measures in pixels
 var instrumentSize = 16;			// size of a single image
 
 // Normal constants
-var pitches = 8;					// number of pitches (squares) in a column
+var pitches = 5;					// number of pitches (squares) in a column
+var octaves = 2;					// number of octaves
+var octaveMargin = 4;
 var measureWidth = 4;				// number of squares in a measure
 var extenderWidth = 24;				// width of the extender bar
 var appendBy = 2;					// number of measures to append at a time
@@ -16,6 +18,7 @@ var instrumentOffset = 2;			// stack distancei
 var noteColor = "#CCCCCC";			// 
 var extenderOverColor = "#EEEEEE";	// 
 var extenderColor = "#CCCCCC";		// 
+var scrollbarOffsets = 20;			//
 
 var NOTA = 0;		// no selection
 var PIANO = 1;
@@ -27,7 +30,7 @@ var VIOLIN = 5;
 
 // computed values
 var size = size + 2*border; 			// actual size including borders
-var h = size*pitches + margin*pitches; 	// height of a column
+var h = size*pitches*octaves + margin*pitches*octaves; 	// height of a column
 var w = (margin+size)*20; 				// the visible section of the grid
 
 
@@ -37,12 +40,6 @@ var numColumns = 0;					// current number of columns
 
 var instrumentsOrder = [PIANO, GUITAR, DRUM, TRUMPET, VIOLIN];	// order of instruments to be displayed in
 var currentInstrument = DRUM;
-	
-	
-	
-	
-/// LOAD events
-window.onload = setEvents;
 	
 	
 // call this onload
@@ -63,17 +60,27 @@ function createSquare(loc_y) {
 
 }
 
+function createOctave(octaveID) {
+	var octave = document.createElement("div");
+	octave.style.overflow = "hidden";
+	
+	for (var i=octaveID*pitches; i<octaveID*pitches + pitches; i++) {
+		octave.appendChild(createSquare(i));
+	}
+
+	return octave;
+}
 
 function createColumn(loc_x) {
 	var column = document.createElement("div");
 	column.id = loc_x;
 
 	column.style.width = size + "px";
-	column.style.height = h + "px";
+	column.style.height = octaveMargin + h + "px";
 	
 
-	for (var i=0; i<pitches; i++) {
-		column.appendChild(createSquare(i));
+	for (var i=0; i<octaves; i++) {
+		column.appendChild(createOctave(i));
 	}
 
 	return column;
@@ -103,16 +110,7 @@ function createExtender() {
 	return btn;
 }
 
-function grid(cols) {
-//	var w = numColumns*size + numColumns*margin;
-	
-	var grid = document.createElement("div");
-	grid.id = "grid";
-	
-	grid.style.width = w + "px";
-	grid.style.height = 20 + h + "px";
-
-
+function createGrid(cols) {
 	var innerGrid = document.createElement("div"); 	
 	var tempW = cols*size + cols*margin + measureSeparation*cols/measureWidth + extenderWidth + 4;	//need to also calculate extra margin
 
@@ -127,12 +125,9 @@ function grid(cols) {
 	
 	// button
 	innerGrid.appendChild(createExtender());
-
-
-	grid.appendChild(innerGrid);
-		
-	document.body.appendChild(grid);
 	numColumns = cols;
+	
+	return innerGrid;
 }
 
 
@@ -148,16 +143,15 @@ function createInstrumentSquare(instrumentID) {
 function mouseClick(event) {
 	var current = event.target;
 	if (current.className == "grid_square") { 
-		var square = event.target;
-		var column = square.parentNode;
+		var column = current.parentNode.parentNode;
 	
-		var index = checkNote(column.id, square.id)
+		var index = checkNote(column.id, current.id)
 		if (index != -1) {
-			square.style.backgroundColor = "transparent";
+			current.style.backgroundColor = "transparent";
 			notes.splice(index, 1);
 		} else {
-			square.style.backgroundColor = noteColor;
-			notes.push(column.id+":"+square.id);
+			current.style.backgroundColor = noteColor;
+			notes.push(column.id+":"+current.id);
 		}
 	} else if (current.id == "extender") {
 		/// APPend columns, make sure to check if you are at the limit later
@@ -203,7 +197,7 @@ function rollOut(event) {
 		}
 	} else if (current.id == "extender") {
 		current.style.backgroundColor = extenderColor;
-	}
+	}createGrid(100);
 }
 
 
@@ -225,3 +219,24 @@ function sortAndPrintNotes() {
 	document.getElementById('output').textContent = notes.sort();
 }
 
+function loadUI() {
+	setEvents();
+	
+	// create Grid
+	var grid = document.getElementById("grid");
+	grid.style.width = w + "px";
+	grid.style.height = scrollbarOffsets + h + "px";
+	grid.appendChild(createGrid(100));
+	
+}
+
+
+///////// FUNCTION CALLs
+	
+	
+/// LOAD events
+window.onload = loadUI;
+
+
+	
+	
