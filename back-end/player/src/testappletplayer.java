@@ -1,11 +1,22 @@
 import java.applet.*;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.sound.midi.*;
 //import java.awt.*;
 
-public class testappletplayer extends Applet {
+public class testappletplayer extends Applet implements ActionListener {
 	Sequencer seq;
+	Button playBtn;
+	Button stopBtn;
 	
 	public void init() {
+		playBtn = new Button("play");
+		stopBtn = new Button("stop"); 
+		
 		try {
 			loadMidiSystem();
 		} catch (Exception e) {
@@ -20,8 +31,17 @@ public class testappletplayer extends Applet {
 			e.printStackTrace();
 		}
 		
-		seq.start();
 		
+		// put a button for UI
+		playBtn.setBounds(10, 10, 30, 30);
+		playBtn.setBounds(40, 10, 30, 30);
+		
+		add(playBtn);
+		add(stopBtn);
+		
+		playBtn.addActionListener(this);
+		stopBtn.addActionListener(this);
+		setSize(800,50);
 		
 		
 	}
@@ -68,4 +88,21 @@ public class testappletplayer extends Applet {
 		return s;
 		
 	}
+
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() == playBtn) {
+			seq.start();
+		}
+		if (event.getSource() == stopBtn) {
+			seq.stop();
+		}
+	}
+	
+	public void paint(Graphics g){
+		//show a text
+		g.setColor(Color.black);
+		g.drawString("This is the JAVA Midi Player", 100, 20);
+		
+	}
+	
 }
