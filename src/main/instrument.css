@@ -1,0 +1,13 @@
+/* Instrument Specific Style: */
+.piano { background-color:blue; }
+.guitar { background-color:green; }
+.drum { background-color:red; }
+.trumpet { background-color:yellow; }
+.violin { background-color:orange; }
+
+.instrumentContainer
+{
+	width:48px;
+	height:48px;
+	float:left;
+}

@@ -1,0 +1,114 @@
+/*
+	Layout CSS,
+	Manages the general structure of the html page.
+
+*/
+
+body
+{
+	background-color:#111111;
+	color:#EEEEEE;
+}
+
+body > div
+{
+	overflow:hidden;
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+	min-width:860px;
+}
+
+#header
+{
+	height:60px;
+}
+
+#header_left
+{
+	float:left;
+	width:300px;
+}
+
+#header_right
+{
+	float:right;
+	width:540px;
+
+}
+#header_right > button
+{
+	float:right;
+	width:160px;
+	height:54px;
+	margin:3px;
+	border:1px solid;
+	font-size:16pt;
+	background-color:#8888FF;
+}
+
+/* tempo bar */
+#header_right > div
+{
+	float:right;
+	width:200px;
+	height:30px;
+	border:1px solid white;
+	margin-top:24px;
+	font-size:8pt;
+	font-weight:bold;
+	text-align:center;
+}
+
+#mid{}
+#footer{}
+
+
+/* Inside of mid section 
+	Make sure to set in grid.css:
+	instrumentBar.width + margin = innergrid.padding-left
+	
+	I dn't wat to do this this wyayAY?!!?!??
+*/
+
+#instrumentBar
+{
+	width:50px;
+	height:300px;
+	border:2px solid;
+	float:left;
+	background-color:#FFFFFF;
+	margin-right:4px;
+}	
+
+#grid
+{
+	border-right:2px solid #FFFFFF;
+	border-bottom:2px solid #FFFFFF;
+	background-color:#DDDDDD;
+	min-width:790px;
+	margin-left:4px;
+}
+
+#midiplayer
+{
+	border:2px solid white;
+	margin-left:56px;
+	text-align:center;
+}
+
+#footer > *
+{
+	float:right;
+}
+
+#output
+{
+	width:700px;
+	height:50px;
+	border:1px solid;
+	float:left;
+	overflow:scroll;
+}
+
+
