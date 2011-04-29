@@ -1,24 +1,48 @@
 <html>
 	<head>
 		<title>403 UI</title>
-		<link rel="stylesheet" type="text/css" href="ui.css" />
-		<script src="ui.js" type="text/javascript">
-		</script>
+		<link rel="stylesheet" type="text/css" href="include/cc.css" />
+		<link rel="stylesheet" type="text/css" href="include/grid.css" />
+		<link rel="stylesheet" type="text/css" href="include/instrument.css" />
+		<script src="include/cc.js" type="text/javascript"></script>
+		<script src="include/grid.js" type="text/javascript"></script>
+		<script src="include/instrument.js" type="text/javascript"></script>
 	</head>
 	
 	<body>
-		<p>Cloud Composer UI!!!</p>
-		<div id="grid">
-		</div>
-		<div style="margin-top:10px;margin-left:auto;margin-right:auto;overflow:hidden;width:860px;">
-			<div style="float:left;">
-				<input type="button" value="Get selected Notes" onclick="printNotes()" /><br />
-				<input type="button" value="Sort" onclick="sortAndPrintNotes()" />
+		<div id="header">
+			<!-- Buttons go here-->
+			<div id="header_left">
+				<h1>Cloud Composer</h1>
 			</div>
-			<div id="output">
-				Hint -> Column id:Square id
+			<div id="header_right">
+				<button>Get Link</button>
+				<button>Download</button>
 			</div>
 		</div>
+		
+		<div id="mid">
+			<div id="instrumentBar">
+			<!-- Instruments bar component goes here-->
+			</div>
+			
+			<div id="grid">
+				<!-- Grid component goes here-->
+			</div>
+		</div>
+		
+		<div id="midiplayer">
+			<!-- Midi player goes here-->
+			<applet code="testappletplayer.class" width="350" height="50">
+				Java applet that draws animated bubbles.
+			</applet>
+		</div>
+		
+		<div id="footer">
+			<!-- Contact information goes here-->
+			<p>&copy; Cloud Composer</p>
+		</div>
+		
 	</body>
 </html>
 
